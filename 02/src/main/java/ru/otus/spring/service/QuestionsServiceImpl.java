@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class QuestionsServiceImpl implements QuestionsService {
 
     private final QuestionsDao dao;
-    private final Scanner sc = new Scanner(System.in);
 
     public QuestionsServiceImpl(QuestionsDao dao) {
         this.dao = dao;
@@ -20,7 +19,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         return dao.getNext();
     }
 
-    public boolean run() {
+    public boolean run(Scanner sc) {
         int countCorrectAnswers = 0;
 
         System.out.print("Enter your first name: ");
