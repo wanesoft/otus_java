@@ -7,6 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.spring.domain.Question;
 import ru.otus.spring.service.QuestionsService;
+import ru.otus.spring.service.UserImpl;
 
 import java.util.Scanner;
 
@@ -18,8 +19,15 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
         QuestionsService service = context.getBean(QuestionsService.class);
-        Scanner sc = new Scanner(System.in);
-        service.run(sc);
+
+        UserImpl user = new UserImpl();
+        var name = user.askMe("Enter your first name: ");
+        name += " ";
+        name += user.askMe("Enter your last name: ");
+
+        int countCorrectAnswers = service.run(user);
+
+        System.out.println("---\n" + name + ", your result: " + countCorrectAnswers + " correct answer(s)");
 
         context.close();
     }

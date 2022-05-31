@@ -19,34 +19,21 @@ public class QuestionsServiceImpl implements QuestionsService {
         return dao.getNext();
     }
 
-    public boolean run(Scanner sc) {
+    public int run(User user) {
         int countCorrectAnswers = 0;
-
-        System.out.print("Enter your first name: ");
-        String fName = sc.next();
-
-        System.out.print("Enter your last name: ");
-        String lName = sc.next();
 
         while (true) {
             Question cur = this.getNext();
             if (cur == null) {
                 break;
             }
-            System.out.println(cur);
-            System.out.print("Enter your answer (1-4): ");
 
-            String answer = sc.next();
+            String answer = user.askMe(cur.toString());
             if (answer.equals(cur.getAnswer())) {
-                System.out.println("Correct");
                 ++countCorrectAnswers;
-            } else {
-                System.out.println("Incorrect");
             }
         }
 
-        System.out.println("---\n" + fName + " " + lName + ", your result: " + countCorrectAnswers + " correct answer(s)");
-
-        return true;
+        return countCorrectAnswers;
     }
 }
