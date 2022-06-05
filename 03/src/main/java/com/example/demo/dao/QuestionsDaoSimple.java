@@ -1,0 +1,44 @@
+package com.example.demo.dao;
+
+import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+import com.example.demo.domain.Question;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Iterator;
+import java.util.List;
+
+@Repository
+public class QuestionsDaoSimple implements QuestionsDao {
+
+    private final String fileName;
+    private List<Question> container = null;
+    private Iterator<Question> it = null;
+
+    public QuestionsDaoSimple(@Value("${cvc.path}") String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Question getNext() {
+        if (container == null) {
+            try {
+                container = new CsvToBeanBuilder(new FileReader(fileName))
+                        .withType(Question.class)
+                        .build()
+                        .parse();
+                it = container.iterator();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        if (it.hasNext()) {
+            return it.next();
+        }
+
+        return null;
+    }
+}
