@@ -1,7 +1,7 @@
 package com.example.demo.dao;
 
+import com.example.demo.config.ApplicationProperty;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import com.example.demo.domain.Question;
 
@@ -13,18 +13,18 @@ import java.util.List;
 @Repository
 public class QuestionsDaoSimple implements QuestionsDao {
 
-    private final String fileName;
+    ApplicationProperty props;
     private List<Question> container = null;
     private Iterator<Question> it = null;
 
-    public QuestionsDaoSimple(@Value("${cvc.path}") String fileName) {
-        this.fileName = fileName;
+    public QuestionsDaoSimple(ApplicationProperty props) {
+        this.props = props;
     }
 
     public Question getNext() {
         if (container == null) {
             try {
-                container = new CsvToBeanBuilder(new FileReader(fileName))
+                container = new CsvToBeanBuilder(new FileReader(props.getCvcPath()))
                         .withType(Question.class)
                         .build()
                         .parse();
