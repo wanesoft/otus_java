@@ -16,8 +16,8 @@ public class DemoApplication {
 		ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
 		QuestionsService service = context.getBean(QuestionsService.class);
 		ApplicationProperty props = context.getBean(ApplicationProperty.class);
+		UserImpl user = context.getBean(UserImpl.class);
 
-		UserImpl user = new UserImpl();
 		var name = user.askMe(context.getMessage("properties.list.enter-first-name", null, Locale.getDefault()));
 		name += " ";
 		name += user.askMe(context.getMessage("properties.list.enter-last-name", null, Locale.getDefault()));

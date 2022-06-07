@@ -1,16 +1,19 @@
 package com.example.demo.service;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Component
 public class UserTestImpl implements User {
 
     private List<Integer> testAnswers = new ArrayList();
     private Iterator<Integer> it = null;
 
-    public UserTestImpl(int numberOfAnswers) {
-        for (int i = 0; i < numberOfAnswers; ++i) {
+    public UserTestImpl() {
+        for (int i = 0; i < 7; ++i) {
             testAnswers.add(1);
         }
     }
