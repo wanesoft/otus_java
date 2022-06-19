@@ -16,8 +16,8 @@ class ShellServiceComponent {
         this.helloService = helloService;
     }
 
-    @ShellMethod(key = "hello-to", value = "Say hello to username")
-    public int helloTo(@ShellOption({"username", "u"}) String username) {
+    @ShellMethod(key = "run", value = "Run the service")
+    public int helloTo() {
         return helloService.run();
     }
 }

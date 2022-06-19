@@ -11,13 +11,13 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 @SpringBootApplication
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
-
 //	public static void main(String[] args) {
-//		ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
-//		QuestionsService service = context.getBean(QuestionsService.class);
-//		service.run();
+//		SpringApplication.run(DemoApplication.class, args);
 //	}
+
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
+		QuestionsService service = context.getBean(QuestionsService.class);
+		service.run();
+	}
 }
