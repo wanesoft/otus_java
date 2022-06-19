@@ -2,4 +2,7 @@
 01/target/**
 02/.idea/**
 02/target/**
+03/.idea/**
+03/build/**
+03/.gradle/**
 *.iml
