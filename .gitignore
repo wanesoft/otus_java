@@ -5,4 +5,7 @@
 03/.idea/**
 03/build/**
 03/.gradle/**
+04/.idea/**
+04/build/**
+04/.gradle/**
 *.iml
