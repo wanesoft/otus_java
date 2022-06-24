@@ -25,6 +25,11 @@ class ShellServiceComponent {
         }
     }
 
+    @ShellMethod(key = "get", value = "Get a book")
+    public void get(@ShellOption long id) {
+        System.out.println(dao.getBookById(id));
+    }
+
     @ShellMethod(key = "create", value = "Create a book")
     public void create(@ShellOption String name, @ShellOption String author, @ShellOption String genre) {
         Book book = new Book(0, name, author, genre);

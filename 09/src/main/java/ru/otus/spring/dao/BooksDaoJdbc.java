@@ -1,13 +1,8 @@
 package ru.otus.spring.dao;
 
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
@@ -15,11 +10,9 @@ import ru.otus.spring.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Repository
 public class BooksDaoJdbc implements BooksDao {
@@ -37,6 +30,22 @@ public class BooksDaoJdbc implements BooksDao {
         return jdbc.query("select b.id, b.name, a.name as author, g.name as genre from books b " +
                 "left join authors a on a.id = b.id_author " +
                 "left join genres g on g.id = b.id_genre", new BookMapper());
+    }
+
+    @Override
+    public Book getBookById(long id) {
+        Map<String, Object> params = Collections.singletonMap("id", id);
+        Book book = null;
+        try {
+            book = namedParameterJdbcOperations.queryForObject(
+                    "select b.id, b.name, a.name as author, g.name as genre from books b " +
+                    "left join authors a on a.id = b.id_author " +
+                    "left join genres g on g.id = b.id_genre where b.id = :id", params, new BookMapper()
+            );
+        } catch (Exception ignored) {
+            ;
+        }
+        return book;
     }
 
     private Author getAuthor(String name) {
@@ -69,6 +78,7 @@ public class BooksDaoJdbc implements BooksDao {
     public void createBook(Book book) {
         String authorName = book.getAuthor();
         String genreName = book.getGenre();
+
         Author author = getAuthor(authorName);
         if (author == null) {
             namedParameterJdbcOperations.update("insert into authors (name) values (:name)", Map.of("name", authorName));
@@ -88,11 +98,13 @@ public class BooksDaoJdbc implements BooksDao {
     public void updateBook(Book book) {
         String authorName = book.getAuthor();
         String genreName = book.getGenre();
+
         Author author = getAuthor(authorName);
         if (author == null) {
             namedParameterJdbcOperations.update("insert into authors (name) values (:name)", Map.of("name", authorName));
             author = getAuthor(authorName);
         }
+        
         Genre genre = getGenre(genreName);
         if (genre == null) {
             namedParameterJdbcOperations.update("insert into genres (name) values (:name)", Map.of("name", genreName));
