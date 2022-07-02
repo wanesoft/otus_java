@@ -1,11 +1,26 @@
-DROP TABLE IF EXISTS AUTHORS;
-CREATE TABLE AUTHORS(ID BIGINT PRIMARY KEY auto_increment, NAME VARCHAR(255));
+create table GENRES(
+    id bigserial,
+    NAME varchar(255),
+    primary key (id)
+);
 
-DROP TABLE IF EXISTS GENRES;
-CREATE TABLE GENRES(ID BIGINT PRIMARY KEY auto_increment, NAME VARCHAR(255));
+create table AUTHORS(
+    id bigserial,
+    name varchar(255),
+    primary key (id)
+);
 
-DROP TABLE IF EXISTS BOOKS;
-CREATE TABLE BOOKS(ID BIGINT PRIMARY KEY auto_increment, NAME VARCHAR(255), ID_AUTHOR BIGINT, ID_GENRE BIGINT);
+create table BOOKS(
+      id bigserial,
+      name varchar(255),
+      genre_id bigint references GENRES (id),
+      author_id bigint references AUTHORS (id),
+      primary key (id)
+);
 
-ALTER TABLE BOOKS ADD FOREIGN KEY (ID_AUTHOR) REFERENCES AUTHORS(ID);
-ALTER TABLE BOOKS ADD FOREIGN KEY (ID_GENRE) REFERENCES AUTHORS(ID);
+create table books_comments(
+    id bigserial,
+    book_id bigint references books(id) on delete cascade,
+    comment varchar(4000),
+    primary key (id)
+);
