@@ -5,64 +5,46 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.repos.BooksRepository;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.service.BooksService;
 
 @ShellComponent
 class ShellServiceComponent {
 
-    BooksRepository repository;
+    BooksService service;
 
     @Autowired
-    public ShellServiceComponent(BooksRepository repository) {
-        this.repository = repository;
+    public ShellServiceComponent(BooksService service) {
+        this.service = service;
     }
 
     @ShellMethod(key = "show", value = "Show all books")
-    @Transactional
     public void showAll() {
-        var l = repository.findAll();
-        for (var p : l) {
-            System.out.println(p);
-        }
+        service.showAll();
     }
 
     @ShellMethod(key = "get", value = "Get a book")
-    public void get(@ShellOption long id) {
-        //System.out.println(daoBooks.getBookById(id));
+    public void showById(@ShellOption long id) {
+        service.showById(id);
     }
 
     @ShellMethod(key = "create", value = "Create a book")
-    @Transactional
     public void create(@ShellOption String name, @ShellOption String authorStr, @ShellOption String genreStr) {
-        Genre genre = new Genre(0, genreStr);
-        Author author = new Author(0, authorStr);
-        Book book = new Book(0, name, author, genre, null);
-        book = repository.save(book);
-        System.out.println("New book is: " + book);
+        service.create(name, authorStr, genreStr);
     }
 
     @ShellMethod(key = "delete", value = "Delete a book by id")
-    @Transactional
     public void deleteById(@ShellOption({"delete", "d"}) long id) {
-        repository.deleteById(id);
+        service.deleteById(id);
     }
 
     @ShellMethod(key = "update", value = "Update a book")
-    @Transactional
     public void update(@ShellOption long id, @ShellOption String name,
                        @ShellOption String authorStr, @ShellOption String genreStr) {
-        Genre genre = new Genre(0, genreStr);
-        Author author = new Author(0, authorStr);
-        Book book = new Book(id, name, author, genre, null);
-        repository.update(book);
+        service.update(id, name, authorStr, genreStr);
     }
 
     @ShellMethod(key = "comment", value = "Comment a book")
-    @Transactional
     public void comment(@ShellOption long id,  @ShellOption String comment) {
-        repository.commentBookById(id, comment);
+        service.comment(id, comment);
     }
 }

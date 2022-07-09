@@ -1,6 +1,8 @@
 package ru.otus.spring.repos;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Comment;
@@ -8,10 +10,9 @@ import ru.otus.spring.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
-@Repository
+@Component
 public class BooksRepositoryJpa implements BooksRepository {
 
     @PersistenceContext
@@ -46,9 +47,8 @@ public class BooksRepositoryJpa implements BooksRepository {
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete from Book b where b.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Book curBook = em.find(Book.class, id);
+        em.remove(curBook);
     }
 
     @Override
