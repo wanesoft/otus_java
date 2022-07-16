@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Comment;
 import ru.otus.spring.domain.Genre;
 
 import java.util.List;
@@ -64,5 +65,10 @@ class DaoJdbcTest {
         book = repository.getById(1);
         assertThat(book.getComments().get(1).getComment()).isEqualTo("One");
         assertThat(book.getComments().get(2).getComment()).isEqualTo("Two");
+        List<Comment> l = repository.commentsById(1);
+        assertThat(l.size()).isEqualTo(3);
+        assertThat(l.get(0).getComment()).isEqualTo("Ololo");
+        assertThat(l.get(1).getComment()).isEqualTo("One");
+        assertThat(l.get(2).getComment()).isEqualTo("Two");
     }
 }

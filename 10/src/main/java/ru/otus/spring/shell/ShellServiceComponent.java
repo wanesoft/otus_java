@@ -47,4 +47,9 @@ class ShellServiceComponent {
     public void comment(@ShellOption long id,  @ShellOption String comment) {
         service.comment(id, comment);
     }
+
+    @ShellMethod(key = "showcomments", value = "Show book's comments")
+    public void showcomments(@ShellOption long id) {
+        service.showcomments(id);
+    }
 }

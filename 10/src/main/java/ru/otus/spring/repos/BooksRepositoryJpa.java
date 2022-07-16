@@ -62,4 +62,9 @@ public class BooksRepositoryJpa implements BooksRepository {
     public Book getById(long id) {
         return em.find(Book.class, id);
     }
+
+    @Override
+    public List<Comment> commentsById(long id) {
+        return em.find(Book.class, id).getComments();
+    }
 }

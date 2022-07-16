@@ -63,4 +63,13 @@ public class BooksServiceImpl implements BooksService {
     public void comment(long id, String comment) {
         repository.commentBookById(id, comment);
     }
+
+    @Override
+    @Transactional
+    public void showcomments(long id) {
+        var l = repository.commentsById(id);
+        for (var p : l) {
+            System.out.println(p);
+        }
+    }
 }

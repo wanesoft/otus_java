@@ -1,6 +1,7 @@
 package ru.otus.spring.repos;
 
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Comment;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface BooksRepository {
     void deleteById(long id);
     Book getById(long id);
     void commentBookById(long id, String comment);
+    List<Comment> commentsById(long id);
 }

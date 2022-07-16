@@ -8,4 +8,5 @@ public interface BooksService {
     void deleteById(long id);
     void update(long id,String name, String authorStr, String genreStr);
     void comment(long id, String comment);
+    void showcomments(long id);
 }
