@@ -14,9 +14,11 @@ import java.util.Optional;
 public class BooksServiceImpl implements BooksService {
 
     BooksRepository repository;
+    IOService ioService;
 
-    public BooksServiceImpl(BooksRepository repository) {
+    public BooksServiceImpl(BooksRepository repository, IOService ioService) {
         this.repository = repository;
+        this.ioService = ioService;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class BooksServiceImpl implements BooksService {
     public void showAll() {
         var l = repository.findAll();
         for (var p : l) {
-            System.out.println(p);
+            ioService.out(p.toString());
         }
     }
 
@@ -35,23 +37,20 @@ public class BooksServiceImpl implements BooksService {
     }
 
     @Override
-    @Transactional
     public void create(String name, String authorStr, String genreStr) {
         Genre genre = new Genre(0, genreStr);
         Author author = new Author(0, authorStr);
         Book book = new Book(0, name, author, genre, null);
         book = repository.save(book);
-        System.out.println("New book is: " + book);
+        ioService.out("New book is: " + book);
     }
 
     @Override
-    @Transactional
     public void deleteById(long id) {
         repository.deleteById(id);
     }
 
     @Override
-    @Transactional
     public void update(long id, String name, String authorStr, String genreStr) {
         Genre genre = new Genre(0, genreStr);
         Author author = new Author(0, authorStr);
@@ -71,7 +70,7 @@ public class BooksServiceImpl implements BooksService {
     public void showcomments(long id) {
         var l = repository.findById(id).get().getComments();
         for (var p : l) {
-            System.out.println(p);
+            ioService.out(p.toString());
         }
     }
 }
